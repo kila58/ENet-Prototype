@@ -132,7 +132,8 @@ void Server::Invoke()
 					server.send_packet_to(msg[0], 0, reinterpret_cast<const enet_uint8*>(cbor.data()), cbor.size(), ENET_PACKET_FLAG_RELIABLE);
 			}
 
-			queue.clear();
+			queue = concurrency::concurrent_vector<json>{};
+			//queue.clear();
 		}
 
 		Consume();

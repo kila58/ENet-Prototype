@@ -14,13 +14,14 @@ void mainloop()
 	auto curtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	auto elapsedtime = curtime;
 
+	json j;
+
 	while (true)
 	{
 		while ((elapsedtime + interval) < curtime)
 		{
 			for (auto c : server.server.get_connected_clients())
 			{
-				json j;
 				j["tick"] = tick;
 
 				server.Send(c->get_uid(), "TickPacket", j);
