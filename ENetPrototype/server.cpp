@@ -33,7 +33,7 @@ void Server::Thread()
 
 	Invoke();
 
-	//std::terminate();
+	std::terminate();
 }
 
 void Server::StartListening(const std::string& hostname, enet_uint16 port)
@@ -138,7 +138,7 @@ void Server::Invoke()
 
 		Consume();
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 }
 

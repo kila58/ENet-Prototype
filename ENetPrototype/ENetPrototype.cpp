@@ -15,6 +15,7 @@ void mainloop()
 	auto elapsedtime = curtime;
 
 	json j;
+	j["tick"] = tick;
 
 	while (true)
 	{
@@ -23,7 +24,6 @@ void mainloop()
 			for (auto c : server.server.get_connected_clients())
 			{
 				j["tick"] = tick;
-
 				server.Send(c->get_uid(), "TickPacket", j);
 			}
 
@@ -42,15 +42,19 @@ int main()
 	auto c = client.Init();
 	auto g = std::make_unique<std::thread>(&mainloop);
 
-	client.callbacks.push_back(NetworkCallback("TickPacket", [&](json message) {
+	client.callbacks.push_back(NetworkCallback("TickPacket", [&](json message){
 		std::cout << message["tick"] << "\n";
-		}));
+	}));
 
 	client.callbacks.push_back(NetworkCallback("JoinMSGPacket", [&](json message){
 		std::cout << std::string(message[0]) << "\n";
-		}));
+	}));
 
 	s->join();
 	c->join();
 	g->join();
+
+	delete(&s, &c, &g);
+
+	return 1;
 }
